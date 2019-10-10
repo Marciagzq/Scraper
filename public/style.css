@@ -1,0 +1,18 @@
+body {
+    background-image: url("https://i.pinimg.com/originals/17/b9/fa/17b9fab10defa0e39c514ea5d4fe2a4c.jpg")
+}
+
+.navbar {
+    background-color: rgb(42, 120, 255);
+    color: white;
+}
+
+.btn {
+    -webkit-box-shadow: 6px 4px 22px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 6px 4px 22px 0px rgba(0,0,0,0.75);
+box-shadow: 6px 4px 22px 0px rgba(0,0,0,0.75);
+}
+
+.jumbotron {
+    
+}
