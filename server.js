@@ -1,22 +1,34 @@
 // DEPENDENCIES 
-var express = require("express") 
-var mongojs = require("mongojs") 
+var express = require("express");
+var logger = require("morgan");
+var mongojs = require("mongojs");
 
+// Our scraping tools
+var axios = require("axios");
+var cheerio = require("cheerio");
 
-// Importing the logic from script folder
-var scrape = require("./script/scrape.js");
-
-// installed!
+// Require all models
+var db = require("./models");
 
 // Initialize Express
 var app = express();
  
-// Set static folder to fetch the folder "public"
+// Selecting the Port 
+var PORT = 3000;
+
+// Configure middleware
+// Use morgan logger for logging requests
+app.use(logger("dev"));
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+// Make public a static folder
 app.use(express.static("public"));
 
-// Database configuration
-var databaseUrl = "scraper";
-var collections = ["srapedData"];
+
+// Connect to the Mongo DB
+mongoose.connect("mongodb://localhost/Scraper-News", { useNewUrlParser: true });
+
 
 // Configuration of package mongojs to the db variable 
 var db = mongojs(databaseUrl, collections);
@@ -25,6 +37,7 @@ var db = mongojs(databaseUrl, collections);
 db.on("error", function(err) {
     console.log("Database Error :", err);
 });
+
 
 // Routes
 // First Route ****
@@ -35,8 +48,30 @@ app.get("/", function(req, res) {
 
 // Route get NEWS 
 app.get("/scrape", function(req, res) {
-    scrape(function(response) { 
-        res.json(response);
+    axios.get("https://www.nytimes.com/section/sports").then(function(response) {
+        // Shortcut 
+    var $ = cheerio.load(response.data);
+
+        $(".css-1l4spti").each(function(i, element) {
+            var results = {};
+
+            results.title = $(this)
+            .children("a")
+            .find("h2")
+            .text();
+
+            results.link = $(this)
+            .children("a")
+            .attr("href");
+
+        db.Article.create(result)
+        .then(function(dbArticle) {
+            console.log(dbArticle)
+        })
+        .catch(function(dbArticle) {
+            console.log(dbArticles)
+         }) 
+        })
     })
 });
 
@@ -58,7 +93,7 @@ app.get("/all", function(req, res) {
 });
 
 
-// Lister the server 
-app.listen(3000, function() {
-    console.log("App running on 3000");
+// Start the server
+app.listen(PORT, function() {
+    console.log("App running on port " + PORT);
 })
