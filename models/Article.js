@@ -15,11 +15,17 @@ var ArticleSchema = new Schema ({
         type: String,
         required: true
     },
+    image: {
+        type: String
+    },
     note: {
-        // TO CHECK THIS UP
         type: Schema.Types.ObjectId,
         ref: "Note"
-    }
+    },
+            // TO CHECK THIS UP *********
+                        //     type: Boolean,
+                        //     default: false
+                    
 });
 
 var Article = mongoose.model("Article", ArticleSchema);
