@@ -13,6 +13,7 @@
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1000000000000;
 }
 
 .btn {
@@ -43,7 +44,15 @@
 } */
 
 .articleTitle {
-    width: 20%;
+    width: 80%;
+}
+
+a:hover {
+    opacity: .7;
+}
+
+a {
+    color: white;
 }
 
 .card {

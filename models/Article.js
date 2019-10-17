@@ -22,6 +22,11 @@ var ArticleSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: "Note"
     },
+    savedState: {
+        type: Boolean,
+        default: false,
+        required: true
+    }
             // TO CHECK THIS UP *********
                         //     type: Boolean,
                         //     default: false
