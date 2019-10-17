@@ -66,9 +66,6 @@ app.get("/scrape", function(req, res) {
         .then(function(dbArticle) {
             console.log(dbArticle)
         })
-        .then(function() {
-            res.redirect("/")
-        })
         .catch(function(err) {
             console.log(err)
          }) 
@@ -147,7 +144,9 @@ app.put("/articles/:id", function(req, res) {
     db.Article.updateOne({
         _id: req.params.id
     }, {
+        $set: {
         savedState: req.body.savedState
+        }
     })
     .then(function(data) {
         res.json(data)
