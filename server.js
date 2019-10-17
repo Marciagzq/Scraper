@@ -66,27 +66,28 @@ app.get("/scrape", function(req, res) {
         .then(function(dbArticle) {
             console.log(dbArticle)
         })
+        .then(function() {
+            res.redirect("/")
+        })
         .catch(function(err) {
             console.log(err)
          }) 
         })
-        // Message to user
-        res.send("Scrape Complete");
+        console.log("scrape complete")
     });
 });
 
 
 // Route to find the Articles
 app.get("/articles", function(req, res) {
-    db.Article.find({}, function(err, response) {
-        if(err){
-            console.log(err)
-        }else{
-            console.log(response);
-            res.send(response);
-        }
+    db.Article.find({}) 
+    .then(function(data){
+        res.json(data);
+    })
+    .catch(function(err){
+        res.json(err);
+    })
     });
-});
 
 
 // Route to saved Articles
@@ -141,6 +142,20 @@ app.post("/note/:id", function(req, res) {
         }
     )
 });
+
+app.put("/articles/:id", function(req, res) {
+    db.Article.updateOne({
+        _id: req.params.id
+    }, {
+        savedState: req.body.savedState
+    })
+    .then(function(data) {
+        res.json(data)
+    })
+    .catch(function(err) {
+        res.json(err)
+    })
+})
 
 
 
